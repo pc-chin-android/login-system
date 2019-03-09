@@ -1,0 +1,27 @@
+<b>&copy; 2019-2019 PC Chin</b>
+<br/>
+<br/>Licensed under the Apache License, Version 2.0 (the "License");
+<br/>you may not use this file except in compliance with the License.
+<br/>You may obtain a copy of the License at
+<br/>
+<br/><a href="http://www.apache.org/licenses/LICENSE-2.0">The Apache Software Foundation</a>
+<br/>
+<br/>Unless required by applicable law or agreed to in writing, software
+<br/>distributed under the License is distributed on an "AS IS" BASIS,
+<br/>WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+<br/>See the License for the specific language governing permissions and
+<br/>limitations under the License.
+<br/>
+<br/>
+<br/><b>Sources Used:</b>
+<br/>
+<br/><a href="https://github.com/MrBIMC/MaterialSeekBarPreference">MaterialSeekBarPreference Library</a> - MrBIMC
+<br/>
+<br/><u>Creative Commons - Attribution 3.0 Unported (CC BY 3.0)</u>
+<br/>
+<br/><a href="http://soundbible.com/1252-Bleep.html">Bleep</a> - Recorded by Mike Koenig on soundbible.com (Audio, no changes made)
+<br/><a href="http://soundbible.com/1251-Beep.html">Beep</a> - Recorded by Mike Koenig on soundbible.com (Audio, no changes made)
+<br/><a href="http://soundbible.com/1682-Robot-Blip.html">Robot Blip Sound</a> - Recorded by Marianne Gagnon on soundbible.com (Audio, no changes made)
+<br/>Undo icon made by <a href="https://www.flaticon.com/authors/daniel-bruce" title="Daniel Bruce">Daniel Bruce</a> from <a href="https://www.flaticon.com/">Flaticon</a>
+<br/>
+<br/>The full license can be found at <a href="https://creativecommons.org/licenses/by/3.0/">Creative Commons</a>

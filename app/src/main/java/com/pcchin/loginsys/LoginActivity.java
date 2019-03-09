@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 public class LoginActivity extends AppCompatActivity {
+    private SharedPreferences.Editor editor;
     private String guidString;
     private boolean doubleBackToExitPressedOnce;
 
@@ -29,12 +30,17 @@ public class LoginActivity extends AppCompatActivity {
         if (guidString == null || guidString.length() == 0) {
             // Set up GUID
             guidString = UUID.randomUUID().toString();
-            SharedPreferences.Editor editor = sharedPref.edit();
+            editor = sharedPref.edit();
             editor.putString("guidString", guidString);
             editor.apply();
         }
 
-        // TODO: Check if user is already logged in
+        boolean isLoggedIn = sharedPref.getBoolean("isLoggedIn", false);
+        if (isLoggedIn) {
+            Intent intent = new Intent(this, UserInfoActivity.class);
+            intent.putExtra("Username", sharedPref.getString("currentUser", ""));
+            startActivity(intent);
+        }
         setContentView(R.layout.activity_login);
     }
 
@@ -83,6 +89,12 @@ public class LoginActivity extends AppCompatActivity {
 
         // Check username and password
         if (firstCheck(username, password) && secondCheck(username, password)) {
+            // Sets isLoggedIn to true
+            editor.putBoolean("isLoggedIn", true);
+            editor.putString("currentUser", username);
+            editor.apply();
+
+            // Starts activity
             Intent intent = new Intent(this, UserInfoActivity.class);
             intent.putExtra("Username", username);
             startActivity(intent);

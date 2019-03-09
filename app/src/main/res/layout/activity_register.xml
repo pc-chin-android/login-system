@@ -7,6 +7,7 @@
     android:background="@drawable/orange_gradient"
     tools:context=".RegisterActivity">
 
+    <!-- TODO: First & Last Name -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,7 +53,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:text="@string/blank"
-            android:textColor="@android:color/holo_red_dark" />
+            android:textColor="@android:color/holo_orange_light" />
 
         <TextView
             android:id="@+id/register_password1_text"
@@ -83,7 +84,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:text="@string/blank"
-            android:textColor="@android:color/holo_red_dark" />
+            android:textColor="@android:color/holo_orange_light" />
 
         <TextView
             android:id="@+id/register_password2_text"
@@ -114,7 +115,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:text="@string/blank"
-            android:textColor="@android:color/holo_red_dark" />
+            android:textColor="@android:color/holo_orange_light" />
 
         <TextView
             android:id="@+id/register_photo_text"
@@ -194,7 +195,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:text="@string/blank"
-            android:textColor="@android:color/holo_red_dark" />
+            android:textColor="@android:color/holo_orange_light" />
 
         <CheckBox
             android:id="@+id/register_tnc"
@@ -213,7 +214,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:text="@string/blank"
-            android:textColor="@android:color/holo_red_dark" />
+            android:textColor="@android:color/holo_orange_light" />
 
         <LinearLayout
             android:id="@+id/register_decision"

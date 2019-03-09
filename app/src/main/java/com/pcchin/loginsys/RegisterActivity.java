@@ -3,6 +3,7 @@ package com.pcchin.loginsys;
 import android.app.DatePickerDialog;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -25,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 public class RegisterActivity extends AppCompatActivity {
     private int PICK_IMAGE = 121;
@@ -115,20 +117,41 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void onRegisterPressed(View view) {
-        clearError();
-        if (checkRequirements()) {
-            // TODO: Create user
-        }
-    }
-
-    // Only used in onRegisterPressed(), separated for clarity
-    private void clearError() {
         // Clears out all errors
         TextView[] errorList = {findViewById(R.id.register_username_error),
-        findViewById(R.id.register_password1_error), findViewById(R.id.register_password2_error),
-        findViewById(R.id.register_code_error), findViewById(R.id.register_tnc_error)};
+                findViewById(R.id.register_password1_error), findViewById(R.id.register_password2_error),
+                findViewById(R.id.register_code_error), findViewById(R.id.register_tnc_error)};
         for (TextView t: errorList) {
             t.setText(R.string.blank);
+        }
+
+        if (checkRequirements()) {
+            Random random = new Random();
+            UserDatabase database = Room.databaseBuilder(this,
+                    UserDatabase.class, "userAccount").allowMainThreadQueries().build();
+            boolean gettingId = true;
+            int uid;
+            while (gettingId) {
+                // Keep trying until unique ID is generated
+                uid = random.nextInt();
+                if (database.userDao().searchById(uid) != null) {
+                    gettingId = false;
+                }
+            }
+
+            String username = ((EditText)findViewById(R.id.register_username_input)).getText().toString();
+            String password = ((EditText)findViewById(R.id.register_password1_input)).getText().toString();
+            String code = ((EditText)findViewById(R.id.register_code_input)).getText().toString();
+
+            // Set isLoggedIn to true
+            SharedPreferences.Editor editor = getSharedPreferences("com.pcchin.loginsys", MODE_PRIVATE).edit();
+            editor.putBoolean("isLoggedIn", true);
+            editor.apply();
+
+            // Go to user info
+            Intent intent = new Intent(this, UserInfoActivity.class);
+            intent.putExtra("username", username);
+            startActivity(intent);
         }
     }
 

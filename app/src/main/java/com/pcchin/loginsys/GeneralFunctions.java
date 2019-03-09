@@ -22,7 +22,7 @@ import javax.crypto.spec.SecretKeySpec;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 class GeneralFunctions {
-    // Static variables: Creation date, User ID, Device ID
+    // Static variables: Creation date, User ID, Device ID (GUID)
     // Encryption (Salt) : AES, Blowfish, RSA
     // Hashing (Password, restore code) : SHA, PBKDF2
 
@@ -81,4 +81,6 @@ class GeneralFunctions {
 
         return new String(responseByte, UTF_8);
     }
+
+    // TODO: Encrypt & Decrypt
 }
