@@ -12,7 +12,6 @@ import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.Security;
-import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -22,19 +21,19 @@ import javax.crypto.spec.SecretKeySpec;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-class SecurityFunctions {
+class GeneralFunctions {
     // Static variables: Creation date, User ID, Device ID
     // Encryption (Salt) : AES, Blowfish, RSA, Elliptic-curve cryptography
     // Hashing (Password, restore code) : SHA, PBKDF2
 
+    @Contract("_, _, _ -> new")
     @NotNull
-    @Contract("_, _ -> new")
-    static String hash(@NotNull String original, @NotNull String salt) {
+    static String hash(@NotNull String original, @NotNull String salt, int guid) {
         byte[] responseByte;
 
         // 1) PBKDF2
         PBEParametersGenerator pbkdfGen = new PKCS5S2ParametersGenerator();
-        pbkdfGen.init(PBEParametersGenerator.PKCS5PasswordToUTF8Bytes(original.toCharArray()), salt.getBytes(), 1000);
+        pbkdfGen.init(PBEParametersGenerator.PKCS5PasswordToUTF8Bytes(original.toCharArray()), salt.getBytes(), 5000);
         KeyParameter params = (KeyParameter)pbkdfGen.generateDerivedParameters(128);
         responseByte = params.getKey();
 
@@ -64,7 +63,7 @@ class SecurityFunctions {
         // 4) RSA with Device ID
         try {
             Cipher rsaCipher = Cipher.getInstance("RSA/ECB/OAEPwithSHA-256andMGF1Padding");
-            SecretKeySpec rsaKeySpec = new SecretKeySpec(UUID.randomUUID().toString().getBytes(),
+            SecretKeySpec rsaKeySpec = new SecretKeySpec(Integer.toString(guid).getBytes(),
                     "RSA");
             rsaCipher.init(Cipher.ENCRYPT_MODE, rsaKeySpec);
             responseByte = rsaCipher.doFinal(responseByte);

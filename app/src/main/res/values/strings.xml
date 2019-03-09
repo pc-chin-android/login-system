@@ -21,7 +21,8 @@
     <string name="password_again">Please re-enter your password</string>
     <string name="photo">Profile Photo</string>
     <string name="select_photo">Select Photo</string>
-    <string name="select_birthday">Enter your birthday</string>
+    <string name="birthday">Birthday</string>
+    <string name="select_birthday">Select birthday</string>
     <string name="current_birthday">Current birthday: </string>
     <string name="select_restore_code">Enter a restore code</string>
     <string name="tnc">I agree to the terms and conditions of this app</string>

@@ -10,7 +10,7 @@ import java.util.List;
 @Dao
 public interface UserDao {
     @Query("SELECT * FROM userAccount")
-    List<UserAccount> getAll();
+    List<UserAccount> getAllUser();
 
     @Query("SELECT * FROM userAccount WHERE _id = (:userId)")
     UserAccount searchById(int userId);

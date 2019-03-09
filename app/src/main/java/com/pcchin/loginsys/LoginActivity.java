@@ -2,6 +2,7 @@ package com.pcchin.loginsys;
 
 import android.arch.persistence.room.Room;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,12 +14,26 @@ import com.pcchin.loginsys.database.UserDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 public class LoginActivity extends AppCompatActivity {
+    private String guidString;
     private boolean doubleBackToExitPressedOnce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Get unique GUID
+        SharedPreferences sharedPref = getSharedPreferences("com.pcchin.loginsys", MODE_PRIVATE);
+        guidString = sharedPref.getString("guidString", "");
+        if (guidString == null || guidString.length() == 0) {
+            // Set up GUID
+            guidString = UUID.randomUUID().toString();
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("guidString", guidString);
+            editor.apply();
+        }
+
         // TODO: Check if user is already logged in
         setContentView(R.layout.activity_login);
     }
@@ -60,9 +75,16 @@ public class LoginActivity extends AppCompatActivity {
         String username = String.valueOf(((TextView) findViewById(R.id.login_username_input)).getText());
         String password = String.valueOf(((TextView) findViewById(R.id.login_password_input)).getText());
 
+        // Reset error messages
+        TextView usernameError = findViewById(R.id.login_username_error);
+        TextView passwordError = findViewById(R.id.login_password_error);
+        usernameError.setText(R.string.blank);
+        passwordError.setText(R.string.blank);
+
         // Check username and password
         if (firstCheck(username, password) && secondCheck(username, password)) {
-            Intent intent = new Intent(this, UserInfoActivity.class);            intent.putExtra("Username", username);
+            Intent intent = new Intent(this, UserInfoActivity.class);
+            intent.putExtra("Username", username);
             startActivity(intent);
         }
     }
@@ -97,9 +119,14 @@ public class LoginActivity extends AppCompatActivity {
             // Separated for clarity and to prevent NullPointerException
             String salt = database.userDao().searchByUsername(username).salt;
             String currentPass = database.userDao().searchByUsername(username).passhash;
-            if (!SecurityFunctions.hash(password, salt).equals(currentPass)) {
+            if (!GeneralFunctions.hash(password, salt, Integer.valueOf(guidString)).equals(currentPass)) {
                 response = false;
             }
+        }
+        if (!response) {
+            // Display error message
+            TextView usernameError = findViewById(R.id.login_username_error);
+            usernameError.setText(R.string.error_incorrect);
         }
         return response;
     }
