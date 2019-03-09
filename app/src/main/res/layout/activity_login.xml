@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/orange_gradient"
+    android:orientation="vertical"
+    tools:context=".LoginActivity">
+
+    <TextView
+        android:id="@+id/login_text"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="2"
+        android:fontFamily="sans-serif-smallcaps"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textColor="@android:color/white"
+        android:textSize="48sp" />
+
+    <ImageView
+        android:id="@+id/login_logo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="1.5"
+        android:contentDescription="@string/blank"
+        android:src="@android:drawable/ic_lock_idle_lock" />
+
+    <TextView
+        android:id="@+id/login_username_text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="0.75"
+        android:text="@string/username"
+        android:textColor="@android:color/white"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/login_username_input"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        android:background="#FFA366"
+        android:ems="10"
+        android:hint="@string/blank"
+        android:inputType="textPersonName"
+        android:text="@string/blank"
+        tools:ignore="Autofill" />
+
+    <TextView
+        android:id="@+id/login_username_error"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="0.5"
+        android:text="@string/blank"
+        android:textColor="@android:color/holo_red_dark" />
+
+    <TextView
+        android:id="@+id/login_password_text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="0.75"
+        android:text="@string/password"
+        android:textColor="@android:color/white"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/login_password_input"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="1"
+        android:background="#FFA366"
+        android:ems="10"
+        android:hint="@string/blank"
+        android:inputType="textPassword"
+        tools:ignore="Autofill" />
+
+    <TextView
+        android:id="@+id/login_password_error"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_weight="0.5"
+        android:text="@string/blank"
+        android:textColor="@android:color/holo_red_dark" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.75" />
+
+    <LinearLayout
+        android:id="@+id/login_decision"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/login_exit"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="onExitPressed"
+            android:text="@string/exit"
+            android:textColor="#FFE0CC"
+            android:textSize="20sp"
+            tools:ignore="NestedWeights" />
+
+        <Button
+            android:id="@+id/login_enter"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="onSigninPressed"
+            android:text="@string/sign_in"
+            android:textColor="#FFE0CC"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.75" />
+
+    <Button
+        android:id="@+id/login_register"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/transparent"
+        android:onClick="onBtnPressed"
+        android:text="@string/register_long"
+        android:textColor="#FFD1B3"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/login_lost_password"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.75"
+        android:background="@android:color/transparent"
+        android:onClick="onBtnPressed"
+        android:text="@string/forget_password"
+        android:textColor="#FFD1B3"
+        android:textSize="16sp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.75" />
+
+    <Button
+        android:id="@+id/login_about"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.75"
+        android:background="@android:color/transparent"
+        android:onClick="onBtnPressed"
+        android:text="@string/about"
+        android:textColor="#FFC299"
+        android:textSize="20sp" />
+
+</LinearLayout>

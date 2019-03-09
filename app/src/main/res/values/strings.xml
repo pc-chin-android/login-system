@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Login System</string>
+
+    <!-- General Terms -->
+    <string name="sign_in">Sign In</string>
+    <string name="register">Register</string>
+    <string name="register_long">Register an account</string>
+    <string name="exit">Exit</string>
+    <string name="about">About</string>
+    <string name="author">Made by PC Chin</string>
+    <string name="version">Version: </string>
+    <string name="forget_password">Forgot your password?</string>
+    <string name="cancel">Cancel</string>
+    <string name="blank" />
+
+    <!-- Input Terms -->
+    <string name="username">Username</string>
+    <string name="username_pls">Please enter your username</string>
+    <string name="password">Password</string>
+    <string name="password_pls">Please enter your password</string>
+    <string name="password_again">Please re-enter your password</string>
+    <string name="photo">Profile Photo</string>
+    <string name="select_photo">Select Photo</string>
+    <string name="select_birthday">Enter your birthday</string>
+    <string name="current_birthday">Current birthday: </string>
+    <string name="select_restore_code">Enter a restore code</string>
+    <string name="tnc">I agree to the terms and conditions of this app</string>
+
+    <!-- Error Strings -->
+    <string name="error_username_blank">Username cannot be blank</string>
+    <string name="error_password_blank">Password cannot be blank</string>
+    <string name="error_code_blank">Restore code cannot be blank</string>
+    <string name="error_incorrect">Username or password is incorrect.</string>
+    <string name="error_username_taken">Username has been taken</string>
+    <string name="error_password_differ">Both passwords don\'t match</string>
+    <string name="error_birthday_invalid">Your birthday is invalid</string>
+    <string name="error_username_404">Username is not found</string>
+</resources>
