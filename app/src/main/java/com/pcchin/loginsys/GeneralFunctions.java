@@ -23,7 +23,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 class GeneralFunctions {
     // Static variables: Creation date, User ID, Device ID
-    // Encryption (Salt) : AES, Blowfish, RSA, Elliptic-curve cryptography
+    // Encryption (Salt) : AES, Blowfish, RSA
     // Hashing (Password, restore code) : SHA, PBKDF2
 
     @Contract("_, _, _ -> new")

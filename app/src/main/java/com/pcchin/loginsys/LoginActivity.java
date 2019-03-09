@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
     private boolean firstCheck(@NotNull String username, String password) {
         // Check if both fields are filled
         boolean response = true;
-        if (username.length() == 0) {
+        if (username.replaceAll("\\s+", "").length() == 0) {
             TextView usernameError = findViewById(R.id.login_username_error);
             usernameError.setText(R.string.error_username_blank);
             response = false;

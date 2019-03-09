@@ -128,12 +128,11 @@
 
         <ImageView
             android:id="@+id/register_photo_display"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:contentDescription="@string/blank"
-            tools:srcCompat="@drawable/user_icon" />
+            android:contentDescription="@string/blank" />
 
         <Button
             android:id="@+id/register_photo_change"
@@ -141,6 +140,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            android:onClick="onPhotoPressed"
             android:text="@string/select_photo"
             android:textSize="12sp" />
 

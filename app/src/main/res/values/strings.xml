@@ -23,17 +23,18 @@
     <string name="select_photo">Select Photo</string>
     <string name="birthday">Birthday</string>
     <string name="select_birthday">Select birthday</string>
-    <string name="current_birthday">Current birthday: </string>
+    <string name="current_birthday">Birthday: </string>
     <string name="select_restore_code">Enter a restore code</string>
     <string name="tnc">I agree to the terms and conditions of this app</string>
 
     <!-- Error Strings -->
-    <string name="error_username_blank">Username cannot be blank</string>
-    <string name="error_password_blank">Password cannot be blank</string>
-    <string name="error_code_blank">Restore code cannot be blank</string>
+    <string name="error_username_blank">Username cannot be blank.</string>
+    <string name="error_password_blank">Password cannot be blank.</string>
+    <string name="error_code_blank">Restore code cannot be blank.</string>
     <string name="error_incorrect">Username or password is incorrect.</string>
-    <string name="error_username_taken">Username has been taken</string>
+    <string name="error_username_taken">Username has been taken.</string>
+    <string name="error_password_short">Password must be at least 8 characters long.</string>
+    <string name="error_password_utf">Password can only contain alphanumeric characters and symbols.</string>
     <string name="error_password_differ">Both passwords don\'t match</string>
-    <string name="error_birthday_invalid">Your birthday is invalid</string>
-    <string name="error_username_404">Username is not found</string>
+    <string name="error_checkbox_fail">You must agree to the terms and conditions to proceed.</string>
 </resources>
