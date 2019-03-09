@@ -1,5 +1,6 @@
 package com.pcchin.loginsys;
 
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -8,10 +9,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pcchin.loginsys.database.UserDatabase;
+
 import org.jetbrains.annotations.NotNull;
 
 public class LoginActivity extends AppCompatActivity {
-    // TODO: Room database
     private boolean doubleBackToExitPressedOnce;
 
     @Override
@@ -59,16 +61,15 @@ public class LoginActivity extends AppCompatActivity {
         String password = String.valueOf(((TextView) findViewById(R.id.login_password_input)).getText());
 
         // Check username and password
-        if (firstCheck(username, password)) {
-            // TODO: Finish check
-            Intent intent = new Intent(this, UserInfoActivity.class);
-            intent.putExtra("Username", username);
+        if (firstCheck(username, password) && secondCheck(username, password)) {
+            Intent intent = new Intent(this, UserInfoActivity.class);            intent.putExtra("Username", username);
             startActivity(intent);
         }
     }
 
     // Only used in onSigninPressed, separated for clarity
     private boolean firstCheck(@NotNull String username, String password) {
+        // Check if both fields are filled
         boolean response = true;
         if (username.length() == 0) {
             TextView usernameError = findViewById(R.id.login_username_error);
@@ -79,6 +80,26 @@ public class LoginActivity extends AppCompatActivity {
             TextView passwordError = findViewById(R.id.login_password_error);
             passwordError.setText(R.string.error_password_blank);
             response = false;
+        }
+        return response;
+    }
+
+    // Only used in onSigninPressed, separated for clarity
+    private boolean secondCheck(String username, String password) {
+        UserDatabase database = Room.databaseBuilder(this,
+                UserDatabase.class, "userAccount").allowMainThreadQueries().build();
+        boolean response = true;
+        if (database.userDao().searchByUsername(username) == null) {
+            // Check if user exists
+            response = false;
+        } else {
+            // Check if password hash matches
+            // Separated for clarity and to prevent NullPointerException
+            String salt = database.userDao().searchByUsername(username).salt;
+            String currentPass = database.userDao().searchByUsername(username).passhash;
+            if (!SecurityFunctions.hash(password, salt).equals(currentPass)) {
+                response = false;
+            }
         }
         return response;
     }

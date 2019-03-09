@@ -5,10 +5,13 @@
       <w>birthdate</w>
       <w>codehash</w>
       <w>passhash</w>
+      <w>pbkdf</w>
       <w>photolink</w>
+      <w>pwith</w>
       <w>sharedpref</w>
       <w>signin</w>
       <w>smallcaps</w>
+      <w>unported</w>
     </words>
   </dictionary>
 </component>
