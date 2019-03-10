@@ -26,6 +26,8 @@
     <string name="current_birthday">Birthday: </string>
     <string name="select_restore_code">Enter a restore code</string>
     <string name="tnc">I agree to the terms and conditions of this app</string>
+    <string name="select_first_name">Please enter your first name</string>
+    <string name="select_last_name">Please enter your last name</string>
 
     <!-- Error Strings -->
     <string name="error_username_blank">Username cannot be blank.</string>
