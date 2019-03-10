@@ -1,6 +1,7 @@
 package com.pcchin.loginsys;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,6 +33,7 @@ import java.util.Locale;
 import java.util.Random;
 
 public class RegisterActivity extends AppCompatActivity {
+    private ProgressDialog waitingDialog;
     private int PICK_IMAGE = 121;
     private String birthday = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).
             format(new Date());
@@ -128,58 +130,73 @@ public class RegisterActivity extends AppCompatActivity {
             t.setText(R.string.blank);
         }
 
-        if (checkRequirements()) {
-            Random random = new Random();
-            UserDatabase database = Room.databaseBuilder(this,
-                    UserDatabase.class, "userAccount").allowMainThreadQueries().build();
-            boolean gettingId = true;
-            int uid = 0;
-            while (gettingId) {
-                // Keep trying until unique ID is generated
-                uid = random.nextInt();
-                if (database.userDao().searchById(uid) == null) {
-                    gettingId = false;
+        Thread waitingThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (checkRequirements()) {
+                    Random random = new Random();
+                    final UserDatabase database = Room.databaseBuilder(getApplicationContext(),
+                            UserDatabase.class, "userAccount").allowMainThreadQueries().build();
+                    boolean gettingId = true;
+                    int uid = 0;
+                    while (gettingId) {
+                        // Keep trying until unique ID is generated
+                        uid = random.nextInt();
+                        if (database.userDao().searchById(uid) == null) {
+                            gettingId = false;
+                        }
+                    }
+
+                    // Get values of user
+                    final String guid = getSharedPreferences("com.pcchin.loginsys", MODE_PRIVATE).
+                            getString("guidString", "");
+                    if (guid != null) {
+                        final String username = ((EditText) findViewById(R.id.register_username_input)).
+                                getText().toString();
+
+                        String password = ((EditText) findViewById(R.id.register_password1_input)).
+                                getText().toString();
+                        String code = ((EditText) findViewById(R.id.register_code_input)).getText().toString();
+                        String firstName = ((EditText) findViewById(R.id.register_firstname_input)).
+                                getText().toString();
+                        String lastName = ((EditText) findViewById(R.id.register_lastname_input)).
+                                getText().toString();
+                        String salt = RandomStringUtils.randomAscii(40, 60);
+                        String creationDate = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).
+                                format(new Date());
+                        String passHash = GeneralFunctions.passwordHash(password, salt, guid);
+                        String codeHash = GeneralFunctions.passwordHash(code, salt, creationDate);
+                        // Set up photo
+                        String photoUrl = getFilesDir().getAbsolutePath() + "/" + Integer.toString(uid) + ".jpg";
+                        GeneralFunctions.storeBitmap(profileImg, photoUrl);
+                        // Set up new user
+                        UserAccount user = new UserAccount(uid, username, creationDate, firstName, lastName,
+                                salt, passHash, codeHash, birthday, photoUrl);
+                        database.userDao().insert(user);
+
+                        // Set isLoggedIn to true
+                        SharedPreferences.Editor editor = getSharedPreferences("com.pcchin.loginsys", MODE_PRIVATE).edit();
+                        editor.putBoolean("isLoggedIn", true);
+                        editor.putString("currentUser", username);
+                        editor.apply();
+
+                        // Go to user info
+                        Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
+                        intent.putExtra("username", username);
+                        startActivity(intent);
+                    }
                 }
+                onRegisterThreadComplete();
             }
+        });
+        waitingThread.start();
 
-            // Get values of user
-            String guid = getSharedPreferences("com.pcchin.loginsys", MODE_PRIVATE).
-                    getString("guidString", "");
-            String username = ((EditText)findViewById(R.id.register_username_input)).
-                    getText().toString();
-            String password = ((EditText)findViewById(R.id.register_password1_input)).
-                    getText().toString();
-            String code = ((EditText)findViewById(R.id.register_code_input)).getText().toString();
-            String firstName = ((EditText)findViewById(R.id.register_firstname_input)).
-                    getText().toString();
-            String lastName = ((EditText)findViewById(R.id.register_lastname_input)).
-                    getText().toString();
-            String salt = RandomStringUtils.randomAscii(40, 60);
-            String creationDate = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).
-                    format(new Date());
-            String passHash = GeneralFunctions.passwordHash(password, salt, guid);
-            String codeHash = GeneralFunctions.passwordHash(code, salt, creationDate);
-
-            // Set up photo
-            String photoUrl = getFilesDir().getAbsolutePath() + "/" + Integer.toString(uid) + ".jpg";
-            GeneralFunctions.storeBitmap(profileImg, photoUrl, this);
-
-            // Set up new user
-            UserAccount user = new UserAccount(uid, username, creationDate, firstName, lastName,
-                    salt, passHash, codeHash, birthday, photoUrl);
-            database.userDao().insert(user);
-
-            // Set isLoggedIn to true
-            SharedPreferences.Editor editor = getSharedPreferences("com.pcchin.loginsys", MODE_PRIVATE).edit();
-            editor.putBoolean("isLoggedIn", true);
-            editor.putString("currentUser", username);
-            editor.apply();
-
-            // Go to user info
-            Intent intent = new Intent(this, UserInfoActivity.class);
-            intent.putExtra("username", username);
-            startActivity(intent);
-        }
+        // Show waiting spinner
+        waitingDialog = new ProgressDialog(this);
+        waitingDialog.setIndeterminate(true);
+        waitingDialog.setMessage(getString(R.string.creating_acc));
+        waitingDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        waitingDialog.show();
     }
 
     // Only used in onRegisterPressed(), separated for clarity
@@ -188,8 +205,13 @@ public class RegisterActivity extends AppCompatActivity {
         // Check if any of the required fields are blank
         EditText usernameInput = findViewById(R.id.register_username_input);
         if (usernameInput.getText().toString().replaceAll("\\s+", "").length() == 0) {
-            TextView usernameError = findViewById(R.id.register_username_error);
-            usernameError.setText(R.string.error_username_blank);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView usernameError = findViewById(R.id.register_username_error);
+                    usernameError.setText(R.string.error_username_blank);
+                }
+            });
             response = false;
         }
 
@@ -199,15 +221,25 @@ public class RegisterActivity extends AppCompatActivity {
 
         EditText codeInput = findViewById(R.id.register_code_input);
         if (codeInput.getText().toString().replaceAll("\\s+", "").length() == 0) {
-            TextView codeError = findViewById(R.id.register_code_error);
-            codeError.setText(R.string.error_code_blank);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView codeError = findViewById(R.id.register_code_error);
+                    codeError.setText(R.string.error_code_blank);
+                }
+            });
             response = false;
         }
 
         CheckBox tncCheck = findViewById(R.id.register_tnc);
         if (! tncCheck.isChecked()) {
-            TextView tncError = findViewById(R.id.register_tnc_error);
-            tncError.setText(R.string.error_checkbox_fail);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView tncError = findViewById(R.id.register_tnc_error);
+                    tncError.setText(R.string.error_checkbox_fail);
+                }
+            });
             response = false;
         }
 
@@ -269,6 +301,10 @@ public class RegisterActivity extends AppCompatActivity {
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH));
         datePicker.show();
+    }
+
+    public void onRegisterThreadComplete() {
+        waitingDialog.dismiss();
     }
 
     // Carry forward function

@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class UserInfoActivity extends AppCompatActivity {
+    // TODO: Complete
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,5 +1,6 @@
 package com.pcchin.loginsys;
 
+import android.app.ProgressDialog;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 public class LoginActivity extends AppCompatActivity {
+    private ProgressDialog progressDialog;
     private SharedPreferences.Editor editor;
     private String guidString;
     private boolean doubleBackToExitPressedOnce;
@@ -78,8 +80,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onSigninPressed(View view) {
-        String username = String.valueOf(((TextView) findViewById(R.id.login_username_input)).getText());
-        String password = String.valueOf(((TextView) findViewById(R.id.login_password_input)).getText());
+        final String username = String.valueOf(((TextView) findViewById(R.id.login_username_input)).getText());
+        final String password = String.valueOf(((TextView) findViewById(R.id.login_password_input)).getText());
 
         // Reset error messages
         TextView usernameError = findViewById(R.id.login_username_error);
@@ -87,18 +89,31 @@ public class LoginActivity extends AppCompatActivity {
         usernameError.setText(R.string.blank);
         passwordError.setText(R.string.blank);
 
-        // Check username and password
-        if (firstCheck(username, password) && secondCheck(username, password)) {
-            // Sets isLoggedIn to true
-            editor.putBoolean("isLoggedIn", true);
-            editor.putString("currentUser", username);
-            editor.apply();
+        Thread loginThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Check username and password
+                if (firstCheck(username, password) && secondCheck(username, password)) {
+                    // Sets isLoggedIn to true
+                    editor.putBoolean("isLoggedIn", true);
+                    editor.putString("currentUser", username);
+                    editor.apply();
 
-            // Starts activity
-            Intent intent = new Intent(this, UserInfoActivity.class);
-            intent.putExtra("Username", username);
-            startActivity(intent);
-        }
+                    // Starts activity
+                    Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
+                    intent.putExtra("Username", username);
+                    startActivity(intent);
+                }
+                onLoginThreadComplete();
+            }
+        });
+        loginThread.start();
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage(getString(R.string.logging_in));
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
     }
 
     // Only used in onSigninPressed, separated for clarity
@@ -106,13 +121,23 @@ public class LoginActivity extends AppCompatActivity {
         // Check if both fields are filled
         boolean response = true;
         if (username.replaceAll("\\s+", "").length() == 0) {
-            TextView usernameError = findViewById(R.id.login_username_error);
-            usernameError.setText(R.string.error_username_blank);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView usernameError = findViewById(R.id.login_username_error);
+                    usernameError.setText(R.string.error_username_blank);
+                }
+            });
             response = false;
         }
         if (password.length() == 0) {
-            TextView passwordError = findViewById(R.id.login_password_error);
-            passwordError.setText(R.string.error_password_blank);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView passwordError = findViewById(R.id.login_password_error);
+                    passwordError.setText(R.string.error_password_blank);
+                }
+            });
             response = false;
         }
         return response;
@@ -137,10 +162,19 @@ public class LoginActivity extends AppCompatActivity {
         }
         if (!response) {
             // Display error message
-            TextView usernameError = findViewById(R.id.login_username_error);
-            usernameError.setText(R.string.error_incorrect);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    TextView usernameError = findViewById(R.id.login_username_error);
+                    usernameError.setText(R.string.error_incorrect);
+                }
+            });
         }
         return response;
+    }
+
+    private void onLoginThreadComplete() {
+        progressDialog.dismiss();
     }
 
     public void onExitPressed(View view) {

@@ -11,6 +11,8 @@
     <string name="version">Version: </string>
     <string name="forget_password">Forgot your password?</string>
     <string name="cancel">Cancel</string>
+    <string name="creating_acc">Creating account…</string>
+    <string name="logging_in">Logging in…</string>
     <string name="blank" />
 
     <!-- Input Terms -->

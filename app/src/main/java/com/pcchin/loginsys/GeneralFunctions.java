@@ -37,8 +37,7 @@ class GeneralFunctions {
 
     @Contract("_, _, _ -> new")
     @NotNull
-    static String passwordHash(@NotNull String original, @NotNull String salt, String guid) {
-        System.out.println("passwordHash");
+    static String passwordHash(@NotNull String original, @NotNull String salt, @NotNull String guid) {
         byte[] responseByte;
 
         // 1) PBKDF2
@@ -48,10 +47,10 @@ class GeneralFunctions {
         KeyParameter params = (KeyParameter)pbkdfGen.generateDerivedParameters(128);
         responseByte = params.getKey();
 
-        // 2) Blowfish with salt
+        // 2) Blowfish with GUID
         try {
             Cipher blowfishCipher = Cipher.getInstance("BLOWFISH/CBC/NoPadding");
-            SecretKeySpec blowfishKeySpec = new SecretKeySpec(salt.getBytes(), "BLOWFISH");
+            SecretKeySpec blowfishKeySpec = new SecretKeySpec(guid.getBytes(), "BLOWFISH");
             blowfishCipher.init(Cipher.ENCRYPT_MODE, blowfishKeySpec);
             responseByte = blowfishCipher.doFinal(responseByte);
         } catch (NoSuchAlgorithmException e) {
@@ -74,10 +73,9 @@ class GeneralFunctions {
         return new String(responseByte, UTF_8);
     }
 
-    static void storeBitmap(@NotNull Bitmap bitmap, String fullPath, @NotNull Context context) {
-        FileOutputStream fileOutputStream = null;
+    static void storeBitmap(@NotNull Bitmap bitmap, String fullPath) {
         try {
-            fileOutputStream = new FileOutputStream(new File(fullPath), false);
+            FileOutputStream fileOutputStream = new FileOutputStream(new File(fullPath), false);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fileOutputStream);
             fileOutputStream.close();
         } catch (FileNotFoundException e) {
