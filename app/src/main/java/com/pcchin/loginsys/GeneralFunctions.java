@@ -1,5 +1,9 @@
 package com.pcchin.loginsys;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import org.bouncycastle.crypto.PBEParametersGenerator;
 import org.bouncycastle.crypto.generators.PKCS5S2ParametersGenerator;
 import org.bouncycastle.crypto.params.KeyParameter;
@@ -8,6 +12,11 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -28,12 +37,14 @@ class GeneralFunctions {
 
     @Contract("_, _, _ -> new")
     @NotNull
-    static String hash(@NotNull String original, @NotNull String salt, int guid) {
+    static String passwordHash(@NotNull String original, @NotNull String salt, String guid) {
+        System.out.println("passwordHash");
         byte[] responseByte;
 
         // 1) PBKDF2
         PBEParametersGenerator pbkdfGen = new PKCS5S2ParametersGenerator();
-        pbkdfGen.init(PBEParametersGenerator.PKCS5PasswordToUTF8Bytes(original.toCharArray()), salt.getBytes(), 5000);
+        pbkdfGen.init(PBEParametersGenerator.PKCS5PasswordToUTF8Bytes(original.toCharArray()),
+                salt.getBytes(), 10000);
         KeyParameter params = (KeyParameter)pbkdfGen.generateDerivedParameters(128);
         responseByte = params.getKey();
 
@@ -60,27 +71,33 @@ class GeneralFunctions {
         MessageDigest shaDigest = new SHA3.Digest512();
         responseByte = shaDigest.digest(responseByte);
 
-        // 4) RSA with Device ID
-        try {
-            Cipher rsaCipher = Cipher.getInstance("RSA/ECB/OAEPwithSHA-256andMGF1Padding");
-            SecretKeySpec rsaKeySpec = new SecretKeySpec(Integer.toString(guid).getBytes(),
-                    "RSA");
-            rsaCipher.init(Cipher.ENCRYPT_MODE, rsaKeySpec);
-            responseByte = rsaCipher.doFinal(responseByte);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        }
-
         return new String(responseByte, UTF_8);
     }
 
-    // TODO: Encrypt & Decrypt
+    static void storeBitmap(@NotNull Bitmap bitmap, String fullPath, @NotNull Context context) {
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(new File(fullPath), false);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fileOutputStream);
+            fileOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static Bitmap getBitmap(String fullPath, @NotNull Context context) {
+        Bitmap bitmap = null;
+        try {
+            FileInputStream fileInputStream = context.openFileInput(fullPath);
+            bitmap = BitmapFactory.decodeStream(fileInputStream);
+            fileInputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
 }

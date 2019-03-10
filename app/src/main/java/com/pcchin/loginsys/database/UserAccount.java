@@ -36,4 +36,21 @@ public class UserAccount {
 
     @ColumnInfo(name = "photolink")
     public String photo;
+
+    public UserAccount(int userId, String username, String creationDate, String firstName,
+                       String lastName, String salt, String passhash, String codeHash,
+                       String birthday, String photo) {
+        this.userId = userId;
+        this.username = username;
+        this.creationDate = creationDate;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.salt = salt;
+        this.passhash = passhash;
+        this.codehash = codeHash;
+        this.birthday = birthday;
+        this.photo = photo;
+    }
+
+    UserAccount() {}
 }

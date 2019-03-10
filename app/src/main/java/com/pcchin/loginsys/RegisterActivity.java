@@ -19,7 +19,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.pcchin.loginsys.database.UserAccount;
 import com.pcchin.loginsys.database.UserDatabase;
+
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -130,22 +133,46 @@ public class RegisterActivity extends AppCompatActivity {
             UserDatabase database = Room.databaseBuilder(this,
                     UserDatabase.class, "userAccount").allowMainThreadQueries().build();
             boolean gettingId = true;
-            int uid;
+            int uid = 0;
             while (gettingId) {
                 // Keep trying until unique ID is generated
                 uid = random.nextInt();
-                if (database.userDao().searchById(uid) != null) {
+                if (database.userDao().searchById(uid) == null) {
                     gettingId = false;
                 }
             }
 
-            String username = ((EditText)findViewById(R.id.register_username_input)).getText().toString();
-            String password = ((EditText)findViewById(R.id.register_password1_input)).getText().toString();
+            // Get values of user
+            String guid = getSharedPreferences("com.pcchin.loginsys", MODE_PRIVATE).
+                    getString("guidString", "");
+            String username = ((EditText)findViewById(R.id.register_username_input)).
+                    getText().toString();
+            String password = ((EditText)findViewById(R.id.register_password1_input)).
+                    getText().toString();
             String code = ((EditText)findViewById(R.id.register_code_input)).getText().toString();
+            String firstName = ((EditText)findViewById(R.id.register_firstname_input)).
+                    getText().toString();
+            String lastName = ((EditText)findViewById(R.id.register_lastname_input)).
+                    getText().toString();
+            String salt = RandomStringUtils.randomAscii(40, 60);
+            String creationDate = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).
+                    format(new Date());
+            String passHash = GeneralFunctions.passwordHash(password, salt, guid);
+            String codeHash = GeneralFunctions.passwordHash(code, salt, creationDate);
+
+            // Set up photo
+            String photoUrl = getFilesDir().getAbsolutePath() + "/" + Integer.toString(uid) + ".jpg";
+            GeneralFunctions.storeBitmap(profileImg, photoUrl, this);
+
+            // Set up new user
+            UserAccount user = new UserAccount(uid, username, creationDate, firstName, lastName,
+                    salt, passHash, codeHash, birthday, photoUrl);
+            database.userDao().insert(user);
 
             // Set isLoggedIn to true
             SharedPreferences.Editor editor = getSharedPreferences("com.pcchin.loginsys", MODE_PRIVATE).edit();
             editor.putBoolean("isLoggedIn", true);
+            editor.putString("currentUser", username);
             editor.apply();
 
             // Go to user info

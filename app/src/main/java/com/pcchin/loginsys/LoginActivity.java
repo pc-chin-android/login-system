@@ -127,11 +127,11 @@ public class LoginActivity extends AppCompatActivity {
             // Check if user exists
             response = false;
         } else {
-            // Check if password hash matches
+            // Check if password passwordHash matches
             // Separated for clarity and to prevent NullPointerException
             String salt = database.userDao().searchByUsername(username).salt;
             String currentPass = database.userDao().searchByUsername(username).passhash;
-            if (!GeneralFunctions.hash(password, salt, Integer.valueOf(guidString)).equals(currentPass)) {
+            if (!GeneralFunctions.passwordHash(password, salt, guidString).equals(currentPass)) {
                 response = false;
             }
         }
