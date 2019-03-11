@@ -3,13 +3,12 @@ package com.pcchin.loginsys;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class UserEditActivity extends AppCompatActivity {
-    // TODO: Complete
+public class AdminActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_edit);
+        setContentView(R.layout.activity_admin);
     }
 
     @Override

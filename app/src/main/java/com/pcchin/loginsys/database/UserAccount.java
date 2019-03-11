@@ -14,12 +14,15 @@ public class UserAccount {
     public String username;
 
     @ColumnInfo(name = "creation_date")
+    public
     String creationDate;
 
     @ColumnInfo(name = "first_name")
+    public
     String firstName;
 
     @ColumnInfo(name = "last_name")
+    public
     String lastName;
 
     @ColumnInfo(name = "salt")
@@ -32,10 +35,13 @@ public class UserAccount {
     String codehash;
 
     @ColumnInfo(name = "birthday")
-    String birthday;
+    public String birthday;
 
     @ColumnInfo(name = "photolink")
-    String photo;
+    public String photo;
+
+    @ColumnInfo(name="isAdmin")
+    public boolean isAdmin;
 
     public UserAccount(int userId, String username, String creationDate, String firstName,
                        String lastName, String salt, String passhash, String codeHash,
@@ -50,6 +56,7 @@ public class UserAccount {
         this.codehash = codeHash;
         this.birthday = birthday;
         this.photo = photo;
+        this.isAdmin = false;
     }
 
     UserAccount() {}

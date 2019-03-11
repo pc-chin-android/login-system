@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Login System</string>
 
+    <!-- Hard coded admin access code (Hashed) -->
+    <string name="admin_code">t2WP8-[[3dnY&lt;F9^)rxXpG$:dVUn_Y</string>
+
     <!-- General Terms -->
     <string name="sign_in">Sign In</string>
     <string name="register">Register</string>
@@ -13,6 +16,9 @@
     <string name="cancel">Cancel</string>
     <string name="creating_acc">Creating account…</string>
     <string name="logging_in">Logging in…</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="access_admin">Access admin menu</string>
+    <string name="logout">Log out</string>
     <string name="blank" />
 
     <!-- Input Terms -->
