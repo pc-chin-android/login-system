@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // TODO: Pop up to set up admin code
         super.onCreate(savedInstanceState);
         // Get unique GUID
         SharedPreferences sharedPref = getSharedPreferences("com.pcchin.loginsys", MODE_PRIVATE);
@@ -40,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         boolean isLoggedIn = sharedPref.getBoolean("isLoggedIn", false);
         if (isLoggedIn) {
             Intent intent = new Intent(this, UserInfoActivity.class);
-            intent.putExtra("Username", sharedPref.getString("currentUser", ""));
+            intent.putExtra("username", sharedPref.getString("currentUser", ""));
             startActivity(intent);
         }
         setContentView(R.layout.activity_login);
@@ -101,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     // Starts activity
                     Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
-                    intent.putExtra("Username", username);
+                    intent.putExtra("username", username);
                     startActivity(intent);
                 }
                 onLoginThreadComplete();

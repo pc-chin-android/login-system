@@ -1,9 +1,266 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserEditActivity">
+    android:background="@android:color/holo_orange_light"
+    tools:context=".RegisterActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <!-- TODO: First & Last Name -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/edit_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-smallcaps"
+            android:gravity="center"
+            android:text="@string/edit_profile"
+            android:textSize="36sp" />
+
+        <TextView
+            android:id="@+id/edit_username_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/username"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edit_username_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="#FFA366"
+            android:ems="10"
+            android:enabled="false"
+            android:hint="@string/blank"
+            android:inputType="textPersonName"
+            android:text="@string/blank"
+            android:textColor="@android:color/darker_gray"
+            tools:ignore="Autofill" />
+
+        <TextView
+            android:id="@+id/edit_password1_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/password_old"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edit_password1_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@android:color/holo_orange_dark"
+            android:ems="10"
+            android:hint="@string/blank"
+            android:inputType="textPassword"
+            tools:ignore="Autofill" />
+
+        <TextView
+            android:id="@+id/edit_password1_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/blank"
+            android:textColor="@android:color/holo_red_dark" />
+
+        <TextView
+            android:id="@+id/edit_password2_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/password_new"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edit_password2_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@android:color/holo_orange_dark"
+            android:ems="10"
+            android:hint="@string/blank"
+            android:inputType="textPassword"
+            tools:ignore="Autofill" />
+
+        <TextView
+            android:id="@+id/edit_password2_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/error_password_new_blank" />
+
+        <TextView
+            android:id="@+id/edit_firstname_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/first_name"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edit_firstname_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@android:color/holo_orange_dark"
+            android:ems="10"
+            android:hint="@string/blank"
+            android:inputType="textPersonName"
+            android:text="@string/blank"
+            tools:ignore="Autofill" />
+
+        <TextView
+            android:id="@+id/edit_lastname_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/last_name"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edit_lastname_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@android:color/holo_orange_dark"
+            android:ems="10"
+            android:hint="@string/blank"
+            android:inputType="textPersonName"
+            android:text="@string/blank"
+            tools:ignore="Autofill" />
+
+        <TextView
+            android:id="@+id/edit_photo_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/photo"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/edit_photo_display"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:contentDescription="@string/blank" />
+
+        <Button
+            android:id="@+id/edit_photo_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/select_photo"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/edit_birthday_current"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/current_birthday"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/edit_birthday_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/select_birthday"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/edit_code_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/restore_code"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/edit_code_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@android:color/holo_orange_dark"
+            android:ems="10"
+            android:hint="@string/blank"
+            android:inputType="textPersonName"
+            android:text="@string/blank"
+            tools:ignore="Autofill" />
+
+        <TextView
+            android:id="@+id/edit_code_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="@string/blank"
+            android:textColor="@android:color/holo_red_dark" />
+
+        <EditText
+            android:id="@+id/edit_admin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="#FFA366"
+            android:ems="10"
+            android:hint="@string/select_admin_code"
+            android:inputType="textPassword"
+            android:textColor="@android:color/darker_gray"
+            tools:ignore="Autofill" />
+
+        <LinearLayout
+            android:id="@+id/edit_decision"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/edit_cancel"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:text="@string/cancel" />
+
+            <Button
+                android:id="@+id/edit_continue"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:text="@string/edit" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

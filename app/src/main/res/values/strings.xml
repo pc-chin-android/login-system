@@ -10,6 +10,8 @@
     <string name="register_long">Register an account</string>
     <string name="exit">Exit</string>
     <string name="about">About</string>
+    <string name="edit">Edit</string>
+    <string name="select_admin_code">Admin Code</string>
     <string name="author">Made by PC Chin</string>
     <string name="version">Version: </string>
     <string name="forget_password">Forgot your password?</string>
@@ -27,11 +29,16 @@
     <string name="password">Password</string>
     <string name="password_pls">Please enter your password</string>
     <string name="password_again">Please re-enter your password</string>
+    <string name="password_old">Old Password</string>
+    <string name="password_new">New Password</string>
     <string name="photo">Profile Photo</string>
     <string name="select_photo">Select Photo</string>
     <string name="birthday">Birthday</string>
     <string name="select_birthday">Select birthday</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
     <string name="current_birthday">Birthday: </string>
+    <string name="restore_code">Restore Code</string>
     <string name="select_restore_code">Enter a restore code</string>
     <string name="tnc">I agree to the terms and conditions of this app</string>
     <string name="select_first_name">Please enter your first name</string>
@@ -45,6 +52,7 @@
     <string name="error_username_taken">Username has been taken.</string>
     <string name="error_password_short">Password must be at least 8 characters long.</string>
     <string name="error_password_utf">Password can only contain alphanumeric characters and symbols.</string>
+    <string name="error_password_new_blank">Leave blank for password to remain the same.</string>
     <string name="error_password_differ">Both passwords don\'t match</string>
     <string name="error_checkbox_fail">You must agree to the terms and conditions to proceed.</string>
 </resources>
