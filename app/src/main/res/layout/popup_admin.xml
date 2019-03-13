@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/popup_admin_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/blank"
+        android:inputType="textPersonName"
+        android:text="@string/blank"
+        tools:ignore="Autofill" />
+
+    <TextView
+        android:id="@+id/popup_admin_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/access_admin_info" />
+
+    <TextView
+        android:id="@+id/popup_admin_change"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/access_admin_change" />
+</LinearLayout>

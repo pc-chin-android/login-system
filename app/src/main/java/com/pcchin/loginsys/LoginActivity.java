@@ -1,13 +1,16 @@
 package com.pcchin.loginsys;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.arch.persistence.room.Room;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,10 +28,10 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO: Pop up to set up admin code
         super.onCreate(savedInstanceState);
+        final SharedPreferences sharedPref = getSharedPreferences("com.pcchin.loginsys", MODE_PRIVATE);
+
         // Get unique GUID
-        SharedPreferences sharedPref = getSharedPreferences("com.pcchin.loginsys", MODE_PRIVATE);
         guidString = sharedPref.getString("guidString", "");
         if (guidString == null || guidString.length() == 0) {
             // Set up GUID
@@ -36,6 +39,37 @@ public class LoginActivity extends AppCompatActivity {
             editor = sharedPref.edit();
             editor.putString("guidString", guidString);
             editor.apply();
+        }
+
+        // Set up admin code
+        String adminCode = sharedPref.getString("adminCode", "");
+        if (adminCode != null && adminCode.length() == 0) {
+            // Admin code will never be null, but this prevents a NullPointerException
+            AlertDialog adminCodeDialog = new AlertDialog.Builder(this)
+                    .setCancelable(false)
+                    .setIcon(R.drawable.ic_launcher_foreground)
+                    .setTitle(R.string.select_admin_code)
+                    .setView(R.layout.popup_admin)
+                    .setPositiveButton(R.string.forward, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            EditText adminCodeInput = findViewById(R.id.popup_admin_input);
+                            String output = adminCodeInput.getText().toString();
+                            if (output.replace("\\s+", "").length() > 0) {
+                                // Check if any text is in input
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.putString("adminCode", GeneralFunctions
+                                .passwordHash(output, guidString, guidString));
+                                editor.apply();
+                                dialog.dismiss();
+                            } else {
+                                Toast.makeText(getApplicationContext(),
+                                        getString(R.string.error_admin_blank),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }).create();
+            adminCodeDialog.show();
         }
 
         boolean isLoggedIn = sharedPref.getBoolean("isLoggedIn", false);

@@ -7,7 +7,6 @@
     android:background="@drawable/orange_gradient"
     tools:context=".RegisterActivity">
 
-    <!-- TODO: First & Last Name -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

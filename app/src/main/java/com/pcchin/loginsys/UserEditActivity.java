@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.pcchin.loginsys.database.UserAccount;
 import com.pcchin.loginsys.database.UserDatabase;
@@ -23,6 +25,10 @@ public class UserEditActivity extends AppCompatActivity {
         UserDatabase database = Room.databaseBuilder(getApplicationContext(),
                 UserDatabase.class, "userAccount").allowMainThreadQueries().build();
         UserAccount currentUser = database.userDao().searchByUsername(username);
+        ((EditText) findViewById(R.id.edit_username_input)).setText(currentUser.username);
+        ((EditText) findViewById(R.id.edit_firstname_input)).setText(currentUser.firstName);
+        ((EditText) findViewById(R.id.edit_lastname_input)).setText(currentUser.lastName);
+
     }
 
     @Override
@@ -39,7 +45,7 @@ public class UserEditActivity extends AppCompatActivity {
         }
     }
 
-    public void onCancelPressed(View view) {
+    public void onEditCancelPressed(View view) {
         Intent intent = new Intent(this, UserInfoActivity.class);
         intent.putExtra("username", username);
         startActivity(intent);

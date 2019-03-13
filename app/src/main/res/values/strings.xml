@@ -1,13 +1,11 @@
 <resources>
     <string name="app_name">Login System</string>
 
-    <!-- Hard coded admin access code (Hashed) -->
-    <string name="admin_code">t2WP8-[[3dnY&lt;F9^)rxXpG$:dVUn_Y</string>
-
     <!-- General Terms -->
     <string name="sign_in">Sign In</string>
     <string name="register">Register</string>
     <string name="register_long">Register an account</string>
+    <string name="forward">Continue</string>
     <string name="exit">Exit</string>
     <string name="about">About</string>
     <string name="edit">Edit</string>
@@ -20,6 +18,9 @@
     <string name="logging_in">Logging in…</string>
     <string name="edit_profile">Edit profile</string>
     <string name="access_admin">Access admin menu</string>
+    <string name="access_admin_info">This code allows you to access the admin menu, \ncontaining the
+    info of all users.</string>
+    <string name="access_admin_change">It can be changed in the admin menu.</string>
     <string name="logout">Log out</string>
     <string name="blank" />
 
@@ -53,6 +54,8 @@
     <string name="error_password_short">Password must be at least 8 characters long.</string>
     <string name="error_password_utf">Password can only contain alphanumeric characters and symbols.</string>
     <string name="error_password_new_blank">Leave blank for password to remain the same.</string>
+    <string name="error_code_new_blank">leave blank for restore code to remain the same.</string>
     <string name="error_password_differ">Both passwords don\'t match</string>
     <string name="error_checkbox_fail">You must agree to the terms and conditions to proceed.</string>
+    <string name="error_admin_blank">Admin code cannot be blank</string>
 </resources>
