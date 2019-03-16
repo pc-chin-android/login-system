@@ -1,5 +1,6 @@
 package com.pcchin.loginsys;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.arch.persistence.room.Room;
@@ -45,31 +46,39 @@ public class LoginActivity extends AppCompatActivity {
         String adminCode = sharedPref.getString("adminCode", "");
         if (adminCode != null && adminCode.length() == 0) {
             // Admin code will never be null, but this prevents a NullPointerException
-            AlertDialog adminCodeDialog = new AlertDialog.Builder(this)
+            // Error suppressed as dialogs do not have parents
+            @SuppressLint("InflateParams") final View adminCodeView = getLayoutInflater()
+                    .inflate(R.layout.popup_admin, null);
+            final AlertDialog adminCodeDialog = new AlertDialog.Builder(this)
                     .setCancelable(false)
                     .setIcon(R.drawable.ic_launcher_foreground)
                     .setTitle(R.string.select_admin_code)
-                    .setView(R.layout.popup_admin)
-                    .setPositiveButton(R.string.forward, new DialogInterface.OnClickListener() {
+                    .setView(adminCodeView)
+                    .setPositiveButton(R.string.forward, null).create();
+            adminCodeDialog.show();
+
+            // Changes listener after shown
+            adminCodeDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(
+                    new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            EditText adminCodeInput = findViewById(R.id.popup_admin_input);
+                        public void onClick(View v) {
+                            EditText adminCodeInput = adminCodeView.findViewById(R.id.popup_admin_input);
                             String output = adminCodeInput.getText().toString();
                             if (output.replace("\\s+", "").length() > 0) {
                                 // Check if any text is in input
                                 SharedPreferences.Editor editor = sharedPref.edit();
                                 editor.putString("adminCode", GeneralFunctions
-                                .passwordHash(output, guidString, guidString));
+                                        .passwordHash(output, guidString, guidString));
                                 editor.apply();
-                                dialog.dismiss();
+                                adminCodeDialog.dismiss();
                             } else {
                                 Toast.makeText(getApplicationContext(),
                                         getString(R.string.error_admin_blank),
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
-                    }).create();
-            adminCodeDialog.show();
+                    }
+            );
         }
 
         boolean isLoggedIn = sharedPref.getBoolean("isLoggedIn", false);

@@ -3,6 +3,7 @@ package com.pcchin.loginsys;
 import android.app.DatePickerDialog;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -20,6 +21,7 @@ import com.pcchin.loginsys.database.UserDatabase;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 public class UserEditActivity extends AppCompatActivity {
     private int EDIT_PICK_IMAGE = 212;
@@ -99,11 +101,8 @@ public class UserEditActivity extends AppCompatActivity {
 
     public void onEditRegisterPressed(View view) {
         // Clears out all errors
-        TextView[] errorList = {findViewById(R.id.edit_password1_error),
-                findViewById(R.id.edit_password2_error)};
-        for (TextView t: errorList) {
-            t.setText(R.string.blank);
-        }
+        ((TextView) findViewById(R.id.edit_password1_error)).setText(R.string.blank);
+        ((TextView) findViewById(R.id.edit_password2_error)).setText(R.string.error_password_new_blank);
 
         // Values will only update when password check met
         if (((EditText) findViewById(R.id.edit_password2_input)).getText().toString().length() == 0 ||
@@ -127,9 +126,9 @@ public class UserEditActivity extends AppCompatActivity {
             }
 
             // Update password if not blank
+            SharedPreferences sharedPref = getSharedPreferences("com.pcchin.loginsys", MODE_PRIVATE);
             String passwordInput = ((EditText) findViewById(R.id.edit_password2_input)).getText().toString();
-            String guid = getSharedPreferences("com.pcchin.loginsys", MODE_PRIVATE).
-                    getString("guidString", "");
+            String guid = sharedPref.getString("guidString", "");
             if (guid != null && passwordInput.length() > 0) {
                 // Password is already checked at the start and guid is never null,
                 // but it is implemented to prevent NullPointerException
@@ -140,6 +139,18 @@ public class UserEditActivity extends AppCompatActivity {
             // Set up photo
             String photoUrl = getFilesDir().getAbsolutePath() + "/" + Integer.toString(currentUser.userId) + ".jpg";
             GeneralFunctions.storeBitmap(profileImg, photoUrl);
+
+            // Check if admin code matches
+            String adminCode = sharedPref.getString("adminCode", "");
+            String adminInput = null;
+            if (guid != null) {
+                adminInput = GeneralFunctions.passwordHash(
+                        ((EditText) findViewById(R.id.edit_admin)).getText().toString(),
+                        guid, guid);
+            }
+            if (adminInput != null && Objects.equals(adminCode, adminInput)) {
+                currentUser.isAdmin = true;
+            }
 
             this.onBackPressed();
         }

@@ -24,7 +24,8 @@ public class UserInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
-        username = savedInstanceState.getString("username");
+        // FIXME: savedInstanceState is null
+        username = savedInstanceState.getString("username", "");
         UserDatabase database = Room.databaseBuilder(getApplicationContext(),
                 UserDatabase.class, "userAccount").allowMainThreadQueries().build();
         UserAccount currentUser = database.userDao().searchByUsername(username);
