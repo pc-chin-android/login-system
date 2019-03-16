@@ -32,7 +32,7 @@ public class UserAccount {
     public String passhash;
 
     @ColumnInfo(name = "codehash")
-    String codehash;
+    public String codehash;
 
     @ColumnInfo(name = "birthday")
     public String birthday;

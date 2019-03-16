@@ -3,6 +3,8 @@ package com.pcchin.loginsys;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import org.bouncycastle.crypto.PBEParametersGenerator;
 import org.bouncycastle.crypto.generators.PKCS5S2ParametersGenerator;
@@ -97,5 +99,36 @@ class GeneralFunctions {
             e.printStackTrace();
         }
         return bitmap;
+    }
+
+    // Will be run from UI Thread
+    static boolean passwordCheck(@NotNull EditText password1Input, EditText password2Input,
+                                 TextView password1Error, TextView password2Error) {
+        boolean response = true;
+
+        // Check for blank fields
+        if (password1Input.getText().toString().length() == 0) {
+            password1Error.setText(R.string.error_password_blank);
+            response = false;
+        }
+
+        if (password1Input.getText().toString().length() < 8) {
+            // Length requirement
+            password1Error.setText(R.string.error_password_short);
+            response = false;
+        } else if (! password1Input.getText().toString().matches("\\A\\p{ASCII}*\\z")) {
+            // Password can only contain ASCII characters
+            password1Error.setText(R.string.error_password_utf);
+            response = false;
+        }
+
+        if ((password1Input.getText().toString().length() != 0 && password2Input.getText().toString().length() != 0)
+        && (! password1Input.getText().toString().equals(password2Input.getText().toString()))) {
+            // Passwords do not match
+            password2Error.setText(R.string.error_password_differ);
+            response = false;
+        }
+
+        return response;
     }
 }

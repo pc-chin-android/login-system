@@ -170,6 +170,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            android:onClick="onEditPhotoPressed"
             android:text="@string/select_photo"
             android:textSize="12sp" />
 
@@ -188,6 +189,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            android:onClick="onEditBirthdayPressed"
             android:text="@string/select_birthday"
             android:textSize="12sp" />
 
@@ -257,6 +259,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
+                android:onClick="onEditRegisterPressed"
                 android:text="@string/edit" />
         </LinearLayout>
 

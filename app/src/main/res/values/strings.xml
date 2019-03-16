@@ -54,7 +54,7 @@
     <string name="error_password_short">Password must be at least 8 characters long.</string>
     <string name="error_password_utf">Password can only contain alphanumeric characters and symbols.</string>
     <string name="error_password_new_blank">Leave blank for password to remain the same.</string>
-    <string name="error_code_new_blank">leave blank for restore code to remain the same.</string>
+    <string name="error_code_new_blank">Leave blank for restore code to remain the same.</string>
     <string name="error_password_differ">Both passwords don\'t match</string>
     <string name="error_checkbox_fail">You must agree to the terms and conditions to proceed.</string>
     <string name="error_admin_blank">Admin code cannot be blank</string>
