@@ -60,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                String editedText = s.toString().replaceAll("\\s+", "");
+                String editedText = s.toString().replaceAll("\\s+", "").toLowerCase();
                 UserDatabase database = Room.databaseBuilder(getApplicationContext(),
                         UserDatabase.class, "userAccount").allowMainThreadQueries().build();
                 TextView usernameError = findViewById(R.id.register_username_error);
@@ -130,7 +130,7 @@ public class RegisterActivity extends AppCompatActivity {
             t.setText(R.string.blank);
         }
 
-        Thread waitingThread = new Thread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 if (checkRequirements()) {
@@ -141,7 +141,7 @@ public class RegisterActivity extends AppCompatActivity {
                     int uid = 0;
                     while (gettingId) {
                         // Keep trying until unique ID is generated
-                        uid = random.nextInt();
+                        uid = Math.abs(random.nextInt());
                         if (database.userDao().searchById(uid) == null) {
                             gettingId = false;
                         }
@@ -152,7 +152,7 @@ public class RegisterActivity extends AppCompatActivity {
                             getString("guidString", "");
                     if (guid != null) {
                         final String username = ((EditText) findViewById(R.id.register_username_input)).
-                                getText().toString();
+                                getText().toString().toLowerCase();
 
                         String password = ((EditText) findViewById(R.id.register_password1_input)).
                                 getText().toString();
@@ -186,10 +186,9 @@ public class RegisterActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 }
-                onRegisterThreadComplete();
+                waitingDialog.dismiss();
             }
-        });
-        waitingThread.start();
+        }).start();
 
         // Show waiting spinner
         waitingDialog = new ProgressDialog(this);
@@ -302,10 +301,6 @@ public class RegisterActivity extends AppCompatActivity {
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH));
         datePicker.show();
-    }
-
-    public void onRegisterThreadComplete() {
-        waitingDialog.dismiss();
     }
 
     // Carry forward function

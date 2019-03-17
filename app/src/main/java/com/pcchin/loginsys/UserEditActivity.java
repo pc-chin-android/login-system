@@ -1,6 +1,7 @@
 package com.pcchin.loginsys;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,6 +26,7 @@ import java.util.Objects;
 
 public class UserEditActivity extends AppCompatActivity {
     private SharedPreferences sharedPref;
+    private ProgressDialog waitingDialog;
     private int EDIT_PICK_IMAGE = 212;
     private UserDatabase database;
     private UserAccount currentUser;
@@ -108,53 +110,66 @@ public class UserEditActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.edit_password2_error)).setText(R.string.error_password_new_blank);
 
         // Values will only update when password check met
-        if (passwordCheck()) {
-            // Update values
-            currentUser.birthday = birthday;
-            currentUser.firstName = ((EditText) findViewById(R.id.edit_firstname_input))
-                    .getText().toString();
-            currentUser.lastName = ((EditText) findViewById(R.id.edit_lastname_input))
-                    .getText().toString();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (passwordCheck()) {
+                    // Update values
+                    currentUser.birthday = birthday;
+                    currentUser.firstName = ((EditText) findViewById(R.id.edit_firstname_input))
+                            .getText().toString();
+                    currentUser.lastName = ((EditText) findViewById(R.id.edit_lastname_input))
+                            .getText().toString();
 
-            // Update code if not blank
-            String codeInput = ((EditText) findViewById(R.id.edit_code_input)).getText().toString()
-                    .replaceAll("\\s++", "");
-            if (codeInput.length() > 0) {
-                currentUser.codehash = GeneralFunctions.passwordHash(codeInput, currentUser.salt,
-                        currentUser.creationDate);
+                    // Update code if not blank
+                    String codeInput = ((EditText) findViewById(R.id.edit_code_input)).getText().toString()
+                            .replaceAll("\\s++", "");
+                    if (codeInput.length() > 0) {
+                        currentUser.codehash = GeneralFunctions.passwordHash(codeInput, currentUser.salt,
+                                currentUser.creationDate);
+                    }
+
+                    // Update password if not blank
+                    String passwordInput = ((EditText) findViewById(R.id.edit_password2_input)).getText().toString();
+                    String guid = sharedPref.getString("guidString", "");
+                    if (guid != null && passwordInput.length() > 0) {
+                        // Password is already checked at the start and guid is never null,
+                        // but it is implemented to prevent NullPointerException
+                        currentUser.passhash = GeneralFunctions.passwordHash(passwordInput,
+                                currentUser.salt, guid);
+                    }
+
+                    // Set up photo
+                    String photoUrl = getFilesDir().getAbsolutePath() + "/" + Integer.toString(currentUser.userId) + ".jpg";
+                    GeneralFunctions.storeBitmap(profileImg, photoUrl);
+
+                    // Check if admin code matches
+                    String adminCode = sharedPref.getString("adminCode", "");
+                    String adminInput = null;
+                    if (guid != null) {
+                        adminInput = GeneralFunctions.passwordHash(
+                                ((EditText) findViewById(R.id.edit_admin)).getText().toString(),
+                                guid, guid);
+                    }
+                    if (adminInput != null && Objects.equals(adminCode, adminInput)) {
+                        currentUser.isAdmin = true;
+                    }
+
+                    // Update value
+                    database.userDao().update(currentUser);
+
+                    onBackPressed();
+                }
+                waitingDialog.dismiss();
             }
+        }).start();
 
-            // Update password if not blank
-            String passwordInput = ((EditText) findViewById(R.id.edit_password2_input)).getText().toString();
-            String guid = sharedPref.getString("guidString", "");
-            if (guid != null && passwordInput.length() > 0) {
-                // Password is already checked at the start and guid is never null,
-                // but it is implemented to prevent NullPointerException
-                currentUser.passhash = GeneralFunctions.passwordHash(passwordInput,
-                        currentUser.salt, guid);
-            }
-
-            // Set up photo
-            String photoUrl = getFilesDir().getAbsolutePath() + "/" + Integer.toString(currentUser.userId) + ".jpg";
-            GeneralFunctions.storeBitmap(profileImg, photoUrl);
-
-            // Check if admin code matches
-            String adminCode = sharedPref.getString("adminCode", "");
-            String adminInput = null;
-            if (guid != null) {
-                adminInput = GeneralFunctions.passwordHash(
-                        ((EditText) findViewById(R.id.edit_admin)).getText().toString(),
-                        guid, guid);
-            }
-            if (adminInput != null && Objects.equals(adminCode, adminInput)) {
-                currentUser.isAdmin = true;
-            }
-
-            // Update value
-            database.userDao().update(currentUser);
-
-            this.onBackPressed();
-        }
+        // Show waiting spinner
+        waitingDialog = new ProgressDialog(this);
+        waitingDialog.setIndeterminate(true);
+        waitingDialog.setMessage(getString(R.string.saving_changes));
+        waitingDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        waitingDialog.show();
     }
 
     @Override
@@ -174,10 +189,10 @@ public class UserEditActivity extends AppCompatActivity {
     }
 
     private boolean passwordCheck() {
-        EditText password1Input = findViewById(R.id.register_password1_input);
-        EditText password2Input = findViewById(R.id.register_password2_input);
-        TextView password1Error = findViewById(R.id.register_password1_error);
-        TextView password2Error = findViewById(R.id.register_password2_error);
+        EditText password1Input = findViewById(R.id.edit_password1_input);
+        EditText password2Input = findViewById(R.id.edit_password2_input);
+        TextView password1Error = findViewById(R.id.edit_password1_error);
+        TextView password2Error = findViewById(R.id.edit_password2_error);
 
         boolean response = true;
 

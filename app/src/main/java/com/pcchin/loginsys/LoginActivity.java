@@ -85,7 +85,6 @@ public class LoginActivity extends AppCompatActivity {
         if (isLoggedIn) {
             Intent intent = new Intent(this, UserInfoActivity.class);
             intent.putExtra("username", sharedPref.getString("currentUser", ""));
-            System.out.println(sharedPref.getString("currentUser", ""));
             startActivity(intent);
         }
         setContentView(R.layout.activity_login);
@@ -125,8 +124,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onSigninPressed(View view) {
-        final String username = String.valueOf(((TextView) findViewById(R.id.login_username_input)).getText());
-        final String password = String.valueOf(((TextView) findViewById(R.id.login_password_input)).getText());
+        final String username = String.valueOf(((TextView) findViewById(R.id.login_username_input))
+                .getText()).toLowerCase();
+        final String password = String.valueOf(((TextView) findViewById(R.id.login_password_input))
+                .getText());
 
         // Reset error messages
         TextView usernameError = findViewById(R.id.login_username_error);
