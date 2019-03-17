@@ -6,8 +6,10 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pcchin.loginsys.database.UserAccount;
@@ -24,8 +26,7 @@ public class UserInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
-        // FIXME: savedInstanceState is null
-        username = savedInstanceState.getString("username", "");
+        username = getIntent().getStringExtra("username");
         UserDatabase database = Room.databaseBuilder(getApplicationContext(),
                 UserDatabase.class, "userAccount").allowMainThreadQueries().build();
         UserAccount currentUser = database.userDao().searchByUsername(username);
@@ -49,7 +50,11 @@ public class UserInfoActivity extends AppCompatActivity {
                     currentUser.birthday));
             Button adminPanel = findViewById(R.id.info_access_admin);
             if (! currentUser.isAdmin) {
+                LinearLayout.LayoutParams noHeight = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        0);
                 adminPanel.setVisibility(INVISIBLE);
+                adminPanel.setLayoutParams(noHeight);
             }
         }
     }

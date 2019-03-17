@@ -85,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
         if (isLoggedIn) {
             Intent intent = new Intent(this, UserInfoActivity.class);
             intent.putExtra("username", sharedPref.getString("currentUser", ""));
+            System.out.println(sharedPref.getString("currentUser", ""));
             startActivity(intent);
         }
         setContentView(R.layout.activity_login);

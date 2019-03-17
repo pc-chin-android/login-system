@@ -90,7 +90,7 @@ class GeneralFunctions {
     static Bitmap getBitmap(String fullPath, @NotNull Context context) {
         Bitmap bitmap = null;
         try {
-            FileInputStream fileInputStream = context.openFileInput(fullPath);
+            FileInputStream fileInputStream = new FileInputStream(new File(fullPath));
             bitmap = BitmapFactory.decodeStream(fileInputStream);
             fileInputStream.close();
         } catch (FileNotFoundException e) {

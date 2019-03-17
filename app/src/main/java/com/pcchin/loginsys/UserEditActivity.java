@@ -33,7 +33,7 @@ public class UserEditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        username = savedInstanceState.getString("username", "");
+        username = getIntent().getStringExtra("username");
         setContentView(R.layout.activity_user_edit);
 
         // Take values from user

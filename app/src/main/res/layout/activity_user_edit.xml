@@ -41,7 +41,6 @@
             android:hint="@string/blank"
             android:inputType="textPersonName"
             android:text="@string/blank"
-            android:textColor="@android:color/darker_gray"
             tools:ignore="Autofill" />
 
         <TextView
@@ -233,7 +232,6 @@
             android:ems="10"
             android:hint="@string/select_admin_code"
             android:inputType="textPassword"
-            android:textColor="@android:color/darker_gray"
             tools:ignore="Autofill" />
 
         <LinearLayout
