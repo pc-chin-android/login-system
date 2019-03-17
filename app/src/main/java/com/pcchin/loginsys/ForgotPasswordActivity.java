@@ -38,6 +38,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // Carry forward function
     public void onForgotCancelPressed(View view) {
         this.onBackPressed();
     }
@@ -51,17 +52,15 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         // Check if user exists
         String username = ((EditText) findViewById(R.id.forgot_username_input)).getText().toString();
         String code = ((EditText) findViewById(R.id.forgot_code_input)).getText().toString();
-        String guid = getSharedPreferences("com.pcchin.loginsys", MODE_PRIVATE)
-                .getString("guidString", "");
 
         UserDatabase database = Room.databaseBuilder(this,
                 UserDatabase.class, "userAccount").allowMainThreadQueries().build();
-        if (database.userDao().searchByUsername(username) == null || guid == null) {
+        if (database.userDao().searchByUsername(username) == null) {
             usernameError.setText(R.string.error_username_missing);
         } else {
             UserAccount currentUser = database.userDao().searchByUsername(username);
             // Check if code matches
-            if (GeneralFunctions.passwordHash(code, currentUser.salt, guid)
+            if (GeneralFunctions.passwordHash(code, currentUser.salt, currentUser.creationDate)
                     .equals(currentUser.codehash)) {
                 // Reset password
                 Intent intent = new Intent(this, NewPasswordActivity.class);
@@ -71,6 +70,5 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 codeError.setText(R.string.error_code_incorrect);
             }
         }
-        database.endTransaction();
     }
 }

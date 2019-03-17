@@ -34,6 +34,9 @@ class GeneralFunctions {
     // Encryption (Salt) : AES, Blowfish, RSA
     // Hashing (Password, restore code) : SHA, PBKDF2
 
+    // Password: Salt, GUID
+    // Code: Salt, creation date
+    // Admin code: GUID * 2
     @Contract("_, _, _ -> new")
     @NotNull
     static String passwordHash(@NotNull String original, @NotNull String salt, @NotNull String guid) {

@@ -216,7 +216,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
-        database.endTransaction();
         return response;
     }
 

@@ -70,12 +70,6 @@ public class UserEditActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        database.endTransaction();
-    }
-
-    @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, UserInfoActivity.class);
         intent.putExtra("username", username);
@@ -149,16 +143,16 @@ public class UserEditActivity extends AppCompatActivity {
                     String photoUrl = getFilesDir().getAbsolutePath() + "/" + Integer.toString(currentUser.userId) + ".jpg";
                     GeneralFunctions.storeBitmap(profileImg, photoUrl);
 
-                    // Check if admin code matches
-                    String adminCode = sharedPref.getString("adminCode", "");
-                    String adminInput = null;
                     if (guid != null) {
-                        adminInput = GeneralFunctions.passwordHash(
+                        // GUID is never null, but inserted to prevent NullPointerException
+                        // Check if admin code matches
+                        String adminCode = sharedPref.getString("adminCode", "");
+                        String adminInput = GeneralFunctions.passwordHash(
                                 ((EditText) findViewById(R.id.edit_admin)).getText().toString(),
-                                guid, currentUser.creationDate);
-                    }
-                    if (adminInput != null && Objects.equals(adminCode, adminInput)) {
-                        currentUser.isAdmin = true;
+                                guid, guid);
+                        if (Objects.equals(adminCode, adminInput)) {
+                            currentUser.isAdmin = true;
+                        }
                     }
 
                     // Update value

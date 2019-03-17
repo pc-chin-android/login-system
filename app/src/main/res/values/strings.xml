@@ -10,6 +10,8 @@
     <string name="about">About</string>
     <string name="edit">Edit</string>
     <string name="next">Next</string>
+    <string name="reset">Reset</string>
+    <string name="enter">Enter</string>
     <string name="select_admin_code">Admin Code</string>
     <string name="author">Made by PC Chin</string>
     <string name="version">Version: </string>
@@ -24,14 +26,15 @@
     info of all users.</string>
     <string name="access_admin_change">It can be changed in the admin menu.</string>
     <string name="logout">Log out</string>
+    <string name="password_updated">Your password has been updated</string>
     <string name="blank" />
 
     <!-- Input Terms -->
     <string name="username">Username</string>
-    <string name="username_pls">Please enter your username</string>
+    <string name="username_pls">Enter your username</string>
     <string name="password">Password</string>
-    <string name="password_pls">Please enter your password</string>
-    <string name="password_again">Please re-enter your password</string>
+    <string name="password_pls">Enter your password</string>
+    <string name="password_again">Re-enter your password</string>
     <string name="password_old">Old Password</string>
     <string name="password_new">New Password</string>
     <string name="photo">Profile Photo</string>
@@ -45,8 +48,8 @@
     <string name="select_restore_code">Enter a restore code</string>
     <string name="enter_restore_code">Enter your restore code</string>
     <string name="tnc">I agree to the terms and conditions of this app</string>
-    <string name="select_first_name">Please enter your first name</string>
-    <string name="select_last_name">Please enter your last name</string>
+    <string name="select_first_name">Enter your first name</string>
+    <string name="select_last_name">Enter your last name</string>
 
     <!-- Error Strings -->
     <string name="error_username_blank">Username cannot be blank.</string>
