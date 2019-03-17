@@ -100,7 +100,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:text="@string/error_password_new_blank" />
+            android:text="@string/error_password_new_blank"
+            android:textColor="@android:color/holo_red_dark" />
 
         <TextView
             android:id="@+id/edit_firstname_text"
@@ -220,7 +221,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:text="@string/error_code_new_blank" />
+            android:text="@string/error_code_new_blank"
+            android:textColor="@android:color/holo_red_dark" />
 
         <EditText
             android:id="@+id/edit_admin"

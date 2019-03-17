@@ -90,10 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                GeneralFunctions.passwordCheck((EditText) findViewById(R.id.register_password1_input),
-                        (EditText) findViewById(R.id.register_password2_input),
-                        (TextView) findViewById(R.id.register_password1_error),
-                        (TextView) findViewById(R.id.register_password2_error));
+                passwordCheck();
             }
         };
         passwordInput1.addTextChangedListener(passwordTextListener);
@@ -218,10 +215,7 @@ public class RegisterActivity extends AppCompatActivity {
             response = false;
         }
 
-        if (! GeneralFunctions.passwordCheck((EditText) findViewById(R.id.register_password1_input),
-                (EditText) findViewById(R.id.register_password2_input),
-                (TextView) findViewById(R.id.register_password1_error),
-                (TextView) findViewById(R.id.register_password2_error))) {
+        if (! passwordCheck()) {
             response = false;
         }
 
@@ -246,6 +240,41 @@ public class RegisterActivity extends AppCompatActivity {
                     tncError.setText(R.string.error_checkbox_fail);
                 }
             });
+            response = false;
+        }
+
+        return response;
+    }
+
+    // Will be run from UI Thread
+    private boolean passwordCheck() {
+        EditText password1Input = findViewById(R.id.register_password1_input);
+        EditText password2Input = findViewById(R.id.register_password2_input);
+        TextView password1Error = findViewById(R.id.register_password1_error);
+        TextView password2Error = findViewById(R.id.register_password2_error);
+
+        boolean response = true;
+
+        // Check for blank fields
+        if (password1Input.getText().toString().length() == 0) {
+            password1Error.setText(R.string.error_password_blank);
+            response = false;
+        }
+
+        if (password1Input.getText().toString().length() < 8) {
+            // Length requirement
+            password1Error.setText(R.string.error_password_short);
+            response = false;
+        } else if (! password1Input.getText().toString().matches("\\A\\p{ASCII}*\\z")) {
+            // Password can only contain ASCII characters
+            password1Error.setText(R.string.error_password_utf);
+            response = false;
+        }
+
+        if ((password1Input.getText().toString().length() != 0 && password2Input.getText().toString().length() != 0)
+                && (! password1Input.getText().toString().equals(password2Input.getText().toString()))) {
+            // Passwords do not match
+            password2Error.setText(R.string.error_password_differ);
             response = false;
         }
 

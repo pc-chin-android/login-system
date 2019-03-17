@@ -24,7 +24,9 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class UserEditActivity extends AppCompatActivity {
+    private SharedPreferences sharedPref;
     private int EDIT_PICK_IMAGE = 212;
+    private UserDatabase database;
     private UserAccount currentUser;
     private String username;
     private String birthday;
@@ -37,7 +39,8 @@ public class UserEditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_edit);
 
         // Take values from user
-        UserDatabase database = Room.databaseBuilder(getApplicationContext(),
+        sharedPref = getSharedPreferences("com.pcchin.loginsys", MODE_PRIVATE);
+        database = Room.databaseBuilder(getApplicationContext(),
                 UserDatabase.class, "userAccount").allowMainThreadQueries().build();
         currentUser = database.userDao().searchByUsername(username);
         ((EditText) findViewById(R.id.edit_username_input)).setText(currentUser.username);
@@ -46,7 +49,7 @@ public class UserEditActivity extends AppCompatActivity {
         birthday = currentUser.birthday;
         ((TextView) findViewById(R.id.edit_birthday_current)).setText(String.format(Locale.ENGLISH,
                 "%s%s", getString(R.string.current_birthday), birthday));
-        profileImg = GeneralFunctions.getBitmap(currentUser.photo,this);
+        profileImg = GeneralFunctions.getBitmap(currentUser.photo);
         ((ImageView) findViewById(R.id.edit_photo_display)).setImageBitmap(profileImg);
     }
 
@@ -105,11 +108,7 @@ public class UserEditActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.edit_password2_error)).setText(R.string.error_password_new_blank);
 
         // Values will only update when password check met
-        if (((EditText) findViewById(R.id.edit_password2_input)).getText().toString().length() == 0 ||
-                GeneralFunctions.passwordCheck((EditText) findViewById(R.id.edit_password1_input),
-                (EditText) findViewById(R.id.edit_password2_input),
-                (TextView) findViewById(R.id.edit_password1_error),
-                (TextView) findViewById(R.id.edit_password2_error))) {
+        if (passwordCheck()) {
             // Update values
             currentUser.birthday = birthday;
             currentUser.firstName = ((EditText) findViewById(R.id.edit_firstname_input))
@@ -126,7 +125,6 @@ public class UserEditActivity extends AppCompatActivity {
             }
 
             // Update password if not blank
-            SharedPreferences sharedPref = getSharedPreferences("com.pcchin.loginsys", MODE_PRIVATE);
             String passwordInput = ((EditText) findViewById(R.id.edit_password2_input)).getText().toString();
             String guid = sharedPref.getString("guidString", "");
             if (guid != null && passwordInput.length() > 0) {
@@ -152,6 +150,9 @@ public class UserEditActivity extends AppCompatActivity {
                 currentUser.isAdmin = true;
             }
 
+            // Update value
+            database.userDao().update(currentUser);
+
             this.onBackPressed();
         }
     }
@@ -170,5 +171,36 @@ public class UserEditActivity extends AppCompatActivity {
             ImageView profileView = findViewById(R.id.edit_photo_display);
             profileView.setImageBitmap(profileImg);
         }
+    }
+
+    private boolean passwordCheck() {
+        EditText password1Input = findViewById(R.id.register_password1_input);
+        EditText password2Input = findViewById(R.id.register_password2_input);
+        TextView password1Error = findViewById(R.id.register_password1_error);
+        TextView password2Error = findViewById(R.id.register_password2_error);
+
+        boolean response = true;
+
+        if (password2Input.getText().toString().length() == 0) {
+            // Earlier return to save processing time
+            return true;
+        }
+
+        if (password2Input.getText().toString().length() < 8) {
+            password2Error.setText(R.string.error_password_short);
+            response = false;
+        } else if (password2Input.getText().toString().matches("\\A\\p{ASCII}*\\z")) {
+            password2Error.setText(R.string.error_password_utf);
+        }
+
+        String guid = sharedPref.getString("guidString", "");
+        if (guid == null || !GeneralFunctions.passwordHash(password1Input.getText().toString(),
+                currentUser.salt, guid).equals(currentUser.passhash)) {
+            // GUID is never null, but implemented to prevent NullPointerException
+            password1Error.setText(R.string.error_password_incorrect);
+            response = false;
+        }
+
+        return response;
     }
 }

@@ -34,7 +34,7 @@ public class UserInfoActivity extends AppCompatActivity {
         if (currentUser != null) {
             // Set user values
             ImageView profileImg = findViewById(R.id.info_profile_img);
-            profileImg.setImageBitmap(GeneralFunctions.getBitmap(currentUser.photo, this));
+            profileImg.setImageBitmap(GeneralFunctions.getBitmap(currentUser.photo));
             TextView username = findViewById(R.id.info_username);
             username.setText(currentUser.username);
             TextView userId = findViewById(R.id.info_userid);
