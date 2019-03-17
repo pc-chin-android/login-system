@@ -70,6 +70,12 @@ public class UserEditActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        database.endTransaction();
+    }
+
+    @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, UserInfoActivity.class);
         intent.putExtra("username", username);
@@ -149,7 +155,7 @@ public class UserEditActivity extends AppCompatActivity {
                     if (guid != null) {
                         adminInput = GeneralFunctions.passwordHash(
                                 ((EditText) findViewById(R.id.edit_admin)).getText().toString(),
-                                guid, guid);
+                                guid, currentUser.creationDate);
                     }
                     if (adminInput != null && Objects.equals(adminCode, adminInput)) {
                         currentUser.isAdmin = true;

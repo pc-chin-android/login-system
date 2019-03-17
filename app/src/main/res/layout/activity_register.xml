@@ -275,7 +275,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:onClick="onCancelPressed"
-                android:text="@string/cancel"
+                android:text="@android:string/cancel"
                 android:textColor="@android:color/white" />
 
             <Button

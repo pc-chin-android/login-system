@@ -250,7 +250,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:onClick="onEditCancelPressed"
-                android:text="@string/cancel" />
+                android:text="@android:string/cancel" />
 
             <Button
                 android:id="@+id/edit_continue"

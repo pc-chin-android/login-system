@@ -2,8 +2,6 @@ package com.pcchin.loginsys;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import org.bouncycastle.crypto.PBEParametersGenerator;
 import org.bouncycastle.crypto.generators.PKCS5S2ParametersGenerator;

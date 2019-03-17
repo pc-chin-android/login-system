@@ -9,16 +9,17 @@
     <string name="exit">Exit</string>
     <string name="about">About</string>
     <string name="edit">Edit</string>
+    <string name="next">Next</string>
     <string name="select_admin_code">Admin Code</string>
     <string name="author">Made by PC Chin</string>
     <string name="version">Version: </string>
     <string name="forget_password">Forgot your password?</string>
-    <string name="cancel">Cancel</string>
     <string name="creating_acc">Creating account…</string>
     <string name="saving_changes">Saving changes…</string>
     <string name="logging_in">Logging in…</string>
     <string name="edit_profile">Edit profile</string>
     <string name="access_admin">Access admin menu</string>
+    <string name="password_reset">Reset password</string>
     <string name="access_admin_info">This code allows you to access the admin menu, \ncontaining the
     info of all users.</string>
     <string name="access_admin_change">It can be changed in the admin menu.</string>
@@ -42,6 +43,7 @@
     <string name="current_birthday">Birthday: </string>
     <string name="restore_code">Restore Code</string>
     <string name="select_restore_code">Enter a restore code</string>
+    <string name="enter_restore_code">Enter your restore code</string>
     <string name="tnc">I agree to the terms and conditions of this app</string>
     <string name="select_first_name">Please enter your first name</string>
     <string name="select_last_name">Please enter your last name</string>
@@ -49,9 +51,11 @@
     <!-- Error Strings -->
     <string name="error_username_blank">Username cannot be blank.</string>
     <string name="error_password_blank">Password cannot be blank.</string>
+    <string name="error_username_missing">Username is not found.</string>
     <string name="error_code_blank">Restore code cannot be blank.</string>
     <string name="error_incorrect">Username or password is incorrect.</string>
     <string name="error_password_incorrect">Password is incorrect.</string>
+    <string name="error_code_incorrect">Restore code is incorrect.</string>
     <string name="error_username_taken">Username has been taken.</string>
     <string name="error_password_short">Password must be at least 8 characters long.</string>
     <string name="error_password_utf">Password can only contain alphanumeric characters and symbols.</string>

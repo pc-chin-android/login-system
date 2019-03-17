@@ -69,6 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
                 } else {
                     usernameError.setText(R.string.blank);
                 }
+                database.endTransaction();
             }
         });
 
@@ -173,6 +174,7 @@ public class RegisterActivity extends AppCompatActivity {
                         UserAccount user = new UserAccount(uid, username, creationDate, firstName, lastName,
                                 salt, passHash, codeHash, birthday, photoUrl);
                         database.userDao().insert(user);
+                        database.endTransaction();
 
                         // Set isLoggedIn to true
                         SharedPreferences.Editor editor = getSharedPreferences("com.pcchin.loginsys", MODE_PRIVATE).edit();

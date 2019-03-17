@@ -3,6 +3,7 @@ package com.pcchin.loginsys;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pcchin.loginsys.database.UserAccount;
 import com.pcchin.loginsys.database.UserDatabase;
@@ -21,6 +23,7 @@ import static android.view.View.INVISIBLE;
 
 public class UserInfoActivity extends AppCompatActivity {
     private String username;
+    private boolean doubleBackToExitPressedOnce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,27 @@ public class UserInfoActivity extends AppCompatActivity {
         android.app.ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             actionBar.hide();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Press back to exit
+        if (doubleBackToExitPressedOnce) {
+            moveTaskToBack(true);
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(0);
+        } else {
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 1500);
+
         }
     }
 
