@@ -31,13 +31,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final SharedPreferences sharedPref = getSharedPreferences("com.pcchin.loginsys", MODE_PRIVATE);
+        editor = sharedPref.edit();
 
         // Get unique GUID
         guidString = sharedPref.getString("guidString", "");
         if (guidString == null || guidString.length() == 0) {
             // Set up GUID
             guidString = UUID.randomUUID().toString();
-            editor = sharedPref.edit();
             editor.putString("guidString", guidString);
             editor.apply();
         }
@@ -51,7 +51,6 @@ public class LoginActivity extends AppCompatActivity {
                     .inflate(R.layout.popup_admin, null);
             final AlertDialog adminCodeDialog = new AlertDialog.Builder(this)
                     .setCancelable(false)
-                    .setIcon(R.drawable.ic_launcher_foreground)
                     .setTitle(R.string.select_admin_code)
                     .setView(adminCodeView)
                     .setPositiveButton(R.string.forward, null).create();
@@ -145,12 +144,17 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("currentUser", username);
                     editor.apply();
 
+                    // Dismiss popup if present
+                    if (progressDialog != null && progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
+
                     // Starts activity
                     Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
                     intent.putExtra("username", username);
                     startActivity(intent);
                 }
-                onLoginThreadComplete();
+                progressDialog.dismiss();
             }
         });
         loginThread.start();
@@ -217,10 +221,6 @@ public class LoginActivity extends AppCompatActivity {
             });
         }
         return response;
-    }
-
-    private void onLoginThreadComplete() {
-        progressDialog.dismiss();
     }
 
     public void onExitPressed(View view) {

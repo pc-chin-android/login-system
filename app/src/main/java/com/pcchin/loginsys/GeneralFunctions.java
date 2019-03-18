@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import org.bouncycastle.crypto.PBEParametersGenerator;
+import org.bouncycastle.crypto.engines.BlowfishEngine;
 import org.bouncycastle.crypto.generators.PKCS5S2ParametersGenerator;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.jcajce.provider.digest.SHA3;
@@ -16,23 +17,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.security.InvalidKeyException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.Security;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 class GeneralFunctions {
     // Static variables: Creation date, User ID, Device ID (GUID)
     // Encryption (Salt) : AES, Blowfish, RSA
     // Hashing (Password, restore code) : SHA, PBKDF2
+    private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
     // Password: Salt, GUID
     // Code: Salt, creation date
@@ -40,39 +32,40 @@ class GeneralFunctions {
     @Contract("_, _, _ -> new")
     @NotNull
     static String passwordHash(@NotNull String original, @NotNull String salt, @NotNull String guid) {
-        byte[] responseByte;
+        byte[] originalByte;
 
-        // 1) PBKDF2
-        PBEParametersGenerator pbkdfGen = new PKCS5S2ParametersGenerator();
-        pbkdfGen.init(PBEParametersGenerator.PKCS5PasswordToUTF8Bytes(original.toCharArray()),
-                salt.getBytes(), 10000);
-        KeyParameter params = (KeyParameter)pbkdfGen.generateDerivedParameters(128);
-        responseByte = params.getKey();
+        // 1) PBKDF2 with salt
+        PBEParametersGenerator pbkdfSaltGen = new PKCS5S2ParametersGenerator();
+        pbkdfSaltGen.init(PBEParametersGenerator.PKCS5PasswordToUTF8Bytes(original.toCharArray()),
+                salt.getBytes(), 20000);
+        KeyParameter saltParams = (KeyParameter)pbkdfSaltGen.generateDerivedParameters(128);
+        originalByte = saltParams.getKey();
 
-        // 2) Blowfish with GUID
-        try {
-            Cipher blowfishCipher = Cipher.getInstance("BLOWFISH/CBC/NoPadding");
-            SecretKeySpec blowfishKeySpec = new SecretKeySpec(guid.getBytes(), "BLOWFISH");
-            blowfishCipher.init(Cipher.ENCRYPT_MODE, blowfishKeySpec);
-            responseByte = blowfishCipher.doFinal(responseByte);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        }
-
-        // 3) SHA
+        // 2) SHA
         Security.addProvider(new BouncyCastleProvider());
         MessageDigest shaDigest = new SHA3.Digest512();
-        responseByte = shaDigest.digest(responseByte);
+        originalByte = shaDigest.digest(originalByte);
 
-        return new String(responseByte, UTF_8);
+        // 3) Blowfish with GUID
+        BlowfishEngine blowfishEngine = new BlowfishEngine();
+        blowfishEngine.init(true,  new KeyParameter(guid.getBytes()));
+        byte[] responseByte = new byte[originalByte.length];
+        blowfishEngine.processBlock(originalByte, original.length(), responseByte, 0);
+
+        return bytesToHex(responseByte);
+    }
+
+    // Only used in passhash(), separated for clarity
+    @NotNull
+    @Contract("_ -> new")
+    private static String bytesToHex(@NotNull byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for ( int j = 0; j < bytes.length; j++ ) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = hexArray[v >>> 4];
+            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        }
+        return new String(hexChars);
     }
 
     static void storeBitmap(@NotNull Bitmap bitmap, String fullPath) {

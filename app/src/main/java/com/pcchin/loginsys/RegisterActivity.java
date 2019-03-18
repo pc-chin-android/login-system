@@ -180,6 +180,11 @@ public class RegisterActivity extends AppCompatActivity {
                         editor.putString("currentUser", username);
                         editor.apply();
 
+                        // Dismiss popup if present
+                        if (waitingDialog != null && waitingDialog.isShowing()) {
+                            waitingDialog.dismiss();
+                        }
+
                         // Go to user info
                         Intent intent = new Intent(getApplicationContext(), UserInfoActivity.class);
                         intent.putExtra("username", username);
