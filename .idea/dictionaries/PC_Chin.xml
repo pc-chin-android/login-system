@@ -5,6 +5,7 @@
       <w>autofill</w>
       <w>codehash</w>
       <w>firstname</w>
+      <w>fullname</w>
       <w>lastname</w>
       <w>loginsys</w>
       <w>passhash</w>

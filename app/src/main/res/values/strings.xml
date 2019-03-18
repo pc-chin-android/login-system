@@ -5,6 +5,7 @@
     <string name="sign_in">Sign In</string>
     <string name="register">Register</string>
     <string name="register_long">Register an account</string>
+    <string name="properties">Properties</string>
     <string name="forward">Continue</string>
     <string name="exit">Exit</string>
     <string name="about">About</string>
@@ -13,6 +14,7 @@
     <string name="reset">Reset</string>
     <string name="enter">Enter</string>
     <string name="select_admin_code">Admin Code</string>
+    <string name="all_users">All Users</string>
     <string name="author">Made by PC Chin</string>
     <string name="version">Version: </string>
     <string name="forget_password">Forgot your password?</string>
