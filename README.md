@@ -13,4 +13,4 @@ Pull requests are welcome.
 
 ## License
 [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
-[BouncyCastle](https://www.bouncycastle.org/licence.html)
+\n[BouncyCastle](https://www.bouncycastle.org/licence.html)
