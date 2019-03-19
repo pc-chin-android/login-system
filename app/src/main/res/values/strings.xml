@@ -7,11 +7,14 @@
     <string name="register_long">Register an account</string>
     <string name="properties">Properties</string>
     <string name="forward">Continue</string>
+    <string name="access">Access</string>
+    <string name="delete">Delete</string>
     <string name="exit">Exit</string>
     <string name="about">About</string>
     <string name="edit">Edit</string>
     <string name="next">Next</string>
     <string name="reset">Reset</string>
+    <string name="back">Return</string>
     <string name="enter">Enter</string>
     <string name="select_admin_code">Admin Code</string>
     <string name="all_users">All Users</string>
@@ -21,6 +24,8 @@
     <string name="creating_acc">Creating account…</string>
     <string name="saving_changes">Saving changes…</string>
     <string name="logging_in">Logging in…</string>
+    <string name="delete_user">Delete user?</string>
+    <string name="user_deleted">User deleted</string>
     <string name="edit_profile">Edit profile</string>
     <string name="access_admin">Access admin menu</string>
     <string name="password_reset">Reset password</string>
@@ -69,4 +74,5 @@
     <string name="error_password_differ">Both passwords don\'t match</string>
     <string name="error_checkbox_fail">You must agree to the terms and conditions to proceed.</string>
     <string name="error_admin_blank">Admin code cannot be blank</string>
+    <string name="error_acc_in_use">Account is in use</string>
 </resources>
